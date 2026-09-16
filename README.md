@@ -207,12 +207,13 @@ curl -i https://mcp.notion.com/mcp \
 
 > Replace placeholder tokens before use.
 
-## GitHub MCP (remote endpoint)
+## GitHub MCP (local Docker server)
 ```bash
-copilot mcp add --transport http github https://api.githubcopilot.com/mcp/ \
-  --header "Authorization: ******"
+copilot mcp add github \
+  --env GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_GITHUB_PAT \
+  -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN \
+  ghcr.io/github/github-mcp-server
 ```
-Use an auth scheme prefix in this header (typically `Bearer`) before your token value.
 
 ## Stripe MCP
 ```bash
