@@ -93,6 +93,13 @@ copilot mcp add --transport http notion https://mcp.notion.com/mcp
 copilot mcp add --transport http stripe https://mcp.stripe.com \
   --header "Authorization: ******"
 ```
+Use an auth scheme prefix in this header (typically `Bearer`) before your token value.
+
+### Remote SSE server
+```bash
+copilot mcp add --transport sse analytics-sse https://example.com/mcp/sse \
+  --header "Authorization: ******"
+```
 
 ## Method C: User config file (`~/.copilot/mcp-config.json`)
 
@@ -100,16 +107,18 @@ Best for bulk edits and backups.
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "memory": {
+      "type": "local",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "tools": ["*"],
       "timeout": 60000
     },
     "notion": {
-      "transport": "http",
+      "type": "http",
       "url": "https://mcp.notion.com/mcp",
+      "headers": {},
       "tools": ["search", "pages.read"]
     }
   }
@@ -122,8 +131,9 @@ Best for team/project defaults.
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "project-memory": {
+      "type": "local",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "tools": ["*"]
@@ -132,10 +142,17 @@ Best for team/project defaults.
 }
 ```
 
+**Config precedence and merge behavior (quick reference):**
+- Copilot CLI scans from your working directory up to repo root for `.mcp.json`, and also reads `.github/mcp.json`.
+- If both files exist in the same directory, `.mcp.json` takes precedence.
+- When names conflict, definitions closer to your working directory win.
+- Project-level definitions take precedence over `~/.copilot/mcp-config.json`.
+
 ## Method E: MCP Registry search (`/mcp search`) — experimental
 
 In interactive mode:
 ```text
+/experimental on
 /mcp search github
 ```
 
@@ -156,7 +173,7 @@ Use this to discover install-ready MCP servers quickly.
 
 ## Authentication failures (401/403)
 - Check token is valid and unexpired
-- Confirm header format: `Authorization: ******`
+- Confirm the Authorization header includes an auth scheme prefix (such as Bearer) followed by a token.
 - Ensure env variable name exactly matches server docs
 
 ## Timeouts or slow responses
@@ -330,6 +347,7 @@ copilot mcp add --transport http <name> <url>
 copilot mcp add --transport http <name> <url> \
   --header "Authorization: ******"
 ```
+Header values should include an auth scheme prefix (for example, `Bearer`) and then your token.
 
 ## Auth via environment variable template
 ```bash
@@ -341,14 +359,29 @@ copilot mcp add <name> \
 ## JSON template
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "<name>": {
-      "transport": "http",
+      "type": "http",
       "url": "https://example.com/mcp",
-      "requestInit": {
-        "headers": {
-          "Authorization": "******"
-        }
+      "headers": {
+        "Authorization": "******"
+      },
+      "tools": ["*"],
+      "timeout": 60000
+    }
+  }
+}
+```
+
+## SSE JSON template
+```json
+{
+  "mcpServers": {
+    "<name>": {
+      "type": "sse",
+      "url": "https://example.com/mcp/sse",
+      "headers": {
+        "Authorization": "******"
       },
       "tools": ["*"],
       "timeout": 60000
