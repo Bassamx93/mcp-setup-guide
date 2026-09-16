@@ -58,7 +58,7 @@ You are now running your first MCP server.
 
 ## 3) All Configuration Methods (5 ways)
 
-## Method A: Interactive form (`/mcp add`) — easiest
+### Method A: Interactive form (`/mcp add`) — easiest
 
 Best for first-time setup.
 
@@ -68,7 +68,7 @@ Best for first-time setup.
 
 Use form fields, save, and changes apply immediately.
 
-## Method B: Terminal command (`copilot mcp add`) — scriptable
+### Method B: Terminal command (`copilot mcp add`) — scriptable
 
 ### Local stdio server
 ```bash
@@ -101,7 +101,7 @@ copilot mcp add --transport sse analytics-sse https://example.com/mcp/sse \
   --header "Authorization: ******"
 ```
 
-## Method C: User config file (`~/.copilot/mcp-config.json`)
+### Method C: User config file (`~/.copilot/mcp-config.json`)
 
 Best for bulk edits and backups.
 
@@ -125,7 +125,7 @@ Best for bulk edits and backups.
 }
 ```
 
-## Method D: Repository config (`.mcp.json` or `.github/mcp.json`)
+### Method D: Repository config (`.mcp.json` or `.github/mcp.json`)
 
 Best for team/project defaults.
 
@@ -142,16 +142,15 @@ Best for team/project defaults.
 }
 ```
 
-**Config precedence and merge behavior (quick reference)**  
-Source: GitHub Docs — *Adding per-repository MCP servers*  
-https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers#adding-per-repository-mcp-servers
+**Config precedence and merge behavior (quick reference summary, paraphrased from GitHub Docs)**  
+Source: https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers#adding-per-repository-mcp-servers
 
 - Copilot CLI scans from your working directory up to repo root for `.mcp.json`, and also reads `.github/mcp.json`.
 - If both files exist in the same directory, `.mcp.json` takes precedence.
 - When names conflict, definitions closer to your working directory win.
 - Project-level definitions take precedence over `~/.copilot/mcp-config.json`.
 
-## Method E: MCP Registry search (`/mcp search`) — experimental
+### Method E: MCP Registry search (`/mcp search`) — experimental
 
 In interactive mode:
 ```text
@@ -165,21 +164,21 @@ Use this to discover install-ready MCP servers quickly.
 
 ## 4) Troubleshooting Guide
 
-## Server does not appear in `/mcp`
+### Server does not appear in `/mcp`
 - Re-run `copilot mcp list`
 - Validate JSON syntax if manually edited
 - Ensure you saved interactive form (`Ctrl+S`)
 
-## Command not found / local server fails to start
+### Command not found / local server fails to start
 - Confirm runtime exists (`node -v`, `python --version`, `docker --version`)
 - Use absolute command path if shell PATH differs
 
-## Authentication failures (401/403)
+### Authentication failures (401/403)
 - Check token is valid and unexpired
 - Confirm the Authorization header includes an auth scheme prefix (such as Bearer) followed by a token.
 - Ensure env variable name exactly matches server docs
 
-## Timeouts or slow responses
+### Timeouts or slow responses
 - Increase timeout:
 ```bash
 copilot mcp edit NAME --timeout 120000
@@ -187,7 +186,7 @@ copilot mcp edit NAME --timeout 120000
 - Reduce enabled tools to only what you need
 - Prefer local network endpoints when possible
 
-## Remote server unreachable
+### Remote server unreachable
 - Verify URL, TLS cert, and firewall/proxy rules
 - Test endpoint with curl (include auth for protected endpoints):
 ```bash
@@ -195,7 +194,7 @@ curl -i https://mcp.notion.com/mcp \
   -H "Authorization: ******"
 ```
 
-## Monitoring and debugging tips
+### Monitoring and debugging tips
 - Use `/mcp` (interactive) or `copilot mcp list` to confirm server status quickly
 - Use `/mcp show <name>` or `copilot mcp show <name>` to verify effective config
 - Run a small test prompt right after setup to validate tool availability
@@ -207,7 +206,7 @@ curl -i https://mcp.notion.com/mcp \
 
 > Replace placeholder tokens before use.
 
-## GitHub MCP (local Docker server)
+### GitHub MCP (local Docker server)
 ```bash
 copilot mcp add github \
   --env GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_GITHUB_PAT \
@@ -215,24 +214,24 @@ copilot mcp add github \
   ghcr.io/github/github-mcp-server
 ```
 
-## Stripe MCP
+### Stripe MCP
 ```bash
 copilot mcp add --transport http stripe https://mcp.stripe.com \
   --header "Authorization: ******"
 ```
 
-## Notion MCP
+### Notion MCP
 ```bash
 copilot mcp add --transport http notion https://mcp.notion.com/mcp \
   --header "Authorization: ******"
 ```
 
-## Memory MCP (local stdio)
+### Memory MCP (local stdio)
 ```bash
 copilot mcp add memory -- npx -y @modelcontextprotocol/server-memory
 ```
 
-## Generic Docker-based local server pattern
+### Generic Docker-based local server pattern
 ```bash
 copilot mcp add my-server \
   --env API_KEY=YOUR_KEY \
@@ -243,23 +242,23 @@ copilot mcp add my-server \
 
 ## 6) Best Practices
 
-## Security
+### Security
 - Never commit secrets in `.mcp.json` or docs
 - Prefer environment variables over hard-coded tokens
 - Use least-privilege tokens per server
 - Rotate credentials regularly
 
-## Performance
+### Performance
 - Enable only required tools (avoid `*` in production if possible)
 - Increase timeout only for genuinely slow backends
 - Remove unused servers to reduce overhead
 
-## Organization
+### Organization
 - Use clear names (`github-prod`, `notion-team`, `stripe-test`)
 - Keep personal servers in `~/.copilot/mcp-config.json`
 - Keep team/project servers in repo config
 
-## Reliability
+### Reliability
 - Add health checks with simple test prompts after setup
 - Track server-specific limits (rate limits, payload limits)
 
@@ -267,7 +266,7 @@ copilot mcp add my-server \
 
 ## 7) CLI Reference
 
-## Add / discover
+### Add / discover
 ```bash
 copilot mcp add NAME -- COMMAND [ARGS...]
 copilot mcp add --transport http NAME URL
@@ -281,7 +280,7 @@ Interactive equivalents:
 /mcp
 ```
 
-## Inspect / manage
+### Inspect / manage
 ```bash
 copilot mcp show NAME
 copilot mcp edit NAME
@@ -299,7 +298,7 @@ Interactive equivalents:
 /mcp disable NAME
 ```
 
-## Common options
+### Common options
 - `--transport stdio|http|sse`
 - `--env KEY=VALUE`
 - `--header "Name: Value"`
@@ -310,24 +309,24 @@ Interactive equivalents:
 
 ## 8) FAQ
 
-## Do I need to restart Copilot CLI after adding a server?
+### Do I need to restart Copilot CLI after adding a server?
 Usually no. Changes apply immediately after save/update.
 
-## What is the difference between stdio and HTTP/SSE?
+### What is the difference between stdio and HTTP/SSE?
 - **stdio**: starts a local process and communicates via stdin/stdout
 - **HTTP/SSE**: connects to a remote MCP endpoint
 
-## Should I use user-level or repo-level config?
+### Should I use user-level or repo-level config?
 - **User-level** for personal servers and secrets
 - **Repo-level** for team-shared defaults
 
-## Can I use multiple MCP servers at once?
+### Can I use multiple MCP servers at once?
 Yes. Add multiple servers and selectively enable/disable them.
 
-## Where should secrets go?
+### Where should secrets go?
 Use environment variables or secret managers. Do not commit plaintext secrets.
 
-## How do I debug a misbehaving server quickly?
+### How do I debug a misbehaving server quickly?
 1. `copilot mcp show <name>`
 2. Verify command/URL/auth values
 3. Reduce tools list to minimum
@@ -338,31 +337,31 @@ Use environment variables or secret managers. Do not commit plaintext secrets.
 
 ## Copy-Paste Templates
 
-## Minimal local server template
+### Minimal local server template
 ```bash
 copilot mcp add <name> -- <command> <arg1> <arg2>
 ```
 
-## Minimal remote server template
+### Minimal remote server template
 ```bash
 copilot mcp add --transport http <name> <url>
 ```
 
-## Auth via header template
+### Auth via header template
 ```bash
 copilot mcp add --transport http <name> <url> \
   --header "Authorization: ******"
 ```
 Header values should include an auth scheme prefix (for example, `Bearer`) and then your token.
 
-## Auth via environment variable template
+### Auth via environment variable template
 ```bash
 copilot mcp add <name> \
   --env API_KEY=<token> \
   -- <command> [args...]
 ```
 
-## JSON template
+### JSON template
 ```json
 {
   "mcpServers": {
@@ -379,7 +378,7 @@ copilot mcp add <name> \
 }
 ```
 
-## SSE JSON template
+### SSE JSON template
 ```json
 {
   "mcpServers": {
