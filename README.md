@@ -142,16 +142,13 @@ Best for team/project defaults.
 }
 ```
 
-**Config precedence and merge behavior (exact rules quoted from GitHub Docs)**  
+**Config precedence and merge behavior (from GitHub Docs)**  
 Source: https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers#adding-per-repository-mcp-servers
 
-> Copilot CLI looks for project-level configuration in `.mcp.json` and `.github/mcp.json`.
->
-> If both `.mcp.json` and `.github/mcp.json` exist in the same directory, `.mcp.json` takes precedence.
->
-> When server names conflict, definitions in files closer to your working directory take precedence.
->
-> Project-level definitions also take precedence over those in `~/.copilot/mcp-config.json`.
+- Copilot CLI reads project-level MCP config from `.mcp.json` and `.github/mcp.json`.
+- If both files are present in the same directory, `.mcp.json` is used first.
+- If server names conflict across project files, the definition closer to your current working directory wins.
+- Project-level server definitions override user-level definitions in `~/.copilot/mcp-config.json`.
 
 ### Method E: MCP Registry search (`/mcp search`) — experimental
 
