@@ -91,14 +91,14 @@ copilot mcp add --transport http notion https://mcp.notion.com/mcp
 ### Remote HTTP with auth header
 ```bash
 copilot mcp add --transport http stripe https://mcp.stripe.com \
-  --header "Authorization: ******"
+  --header "Authorization: Bearer <TOKEN>"
 ```
 Use an auth scheme prefix in this header (typically `Bearer`) before your token value.
 
 ### Remote SSE server
 ```bash
 copilot mcp add --transport sse analytics-sse https://example.com/mcp/sse \
-  --header "Authorization: ******"
+  --header "Authorization: Bearer <TOKEN>"
 ```
 
 ### Method C: User config file (`~/.copilot/mcp-config.json`)
@@ -147,7 +147,7 @@ Source: https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot
 
 - Copilot CLI reads project-level MCP config from `.mcp.json` and `.github/mcp.json`.
 - If both files are present in the same directory, `.mcp.json` is used first.
-- If server names conflict across project files, the definition closer to your current working directory wins.
+- If server names conflict across project files in different directories, the definition closer to your current working directory wins.
 - Project-level server definitions override user-level definitions in `~/.copilot/mcp-config.json`.
 
 ### Method E: MCP Registry search (`/mcp search`) — experimental
@@ -191,7 +191,7 @@ copilot mcp edit NAME --timeout 120000
 - Test endpoint with curl (include auth for protected endpoints):
 ```bash
 curl -i https://mcp.notion.com/mcp \
-  -H "Authorization: ******"
+  -H "Authorization: Bearer <TOKEN>"
 ```
 
 ### Monitoring and debugging tips
@@ -217,13 +217,13 @@ copilot mcp add github \
 ### Stripe MCP
 ```bash
 copilot mcp add --transport http stripe https://mcp.stripe.com \
-  --header "Authorization: ******"
+  --header "Authorization: Bearer <TOKEN>"
 ```
 
 ### Notion MCP
 ```bash
 copilot mcp add --transport http notion https://mcp.notion.com/mcp \
-  --header "Authorization: ******"
+  --header "Authorization: Bearer <TOKEN>"
 ```
 
 ### Memory MCP (local stdio)
@@ -350,7 +350,7 @@ copilot mcp add --transport http <name> <url>
 ### Auth via header template
 ```bash
 copilot mcp add --transport http <name> <url> \
-  --header "Authorization: ******"
+  --header "Authorization: Bearer <TOKEN>"
 ```
 Header values should include an auth scheme prefix (for example, `Bearer`) and then your token.
 
@@ -369,7 +369,7 @@ copilot mcp add <name> \
       "type": "http",
       "url": "https://example.com/mcp",
       "headers": {
-        "Authorization": "******"
+        "Authorization": "Bearer <TOKEN>"
       },
       "tools": ["*"],
       "timeout": 60000
@@ -386,7 +386,7 @@ copilot mcp add <name> \
       "type": "sse",
       "url": "https://example.com/mcp/sse",
       "headers": {
-        "Authorization": "******"
+        "Authorization": "Bearer <TOKEN>"
       },
       "tools": ["*"],
       "timeout": 60000
