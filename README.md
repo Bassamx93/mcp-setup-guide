@@ -182,7 +182,7 @@ Use this to discover install-ready MCP servers quickly.
 ## Timeouts or slow responses
 - Increase timeout:
 ```bash
-copilot mcp edit SERVER_NAME --timeout 120000
+copilot mcp edit NAME --timeout 120000
 ```
 - Reduce enabled tools to only what you need
 - Prefer local network endpoints when possible
