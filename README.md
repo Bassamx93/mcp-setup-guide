@@ -142,7 +142,10 @@ Best for team/project defaults.
 }
 ```
 
-**Config precedence and merge behavior (quick reference):**
+**Config precedence and merge behavior (quick reference)**  
+Source: GitHub Docs — *Adding per-repository MCP servers*  
+https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers#adding-per-repository-mcp-servers
+
 - Copilot CLI scans from your working directory up to repo root for `.mcp.json`, and also reads `.github/mcp.json`.
 - If both files exist in the same directory, `.mcp.json` takes precedence.
 - When names conflict, definitions closer to your working directory win.
@@ -186,9 +189,10 @@ copilot mcp edit SERVER_NAME --timeout 120000
 
 ## Remote server unreachable
 - Verify URL, TLS cert, and firewall/proxy rules
-- Test endpoint with curl:
+- Test endpoint with curl (include auth for protected endpoints):
 ```bash
-curl -i https://mcp.notion.com/mcp
+curl -i https://mcp.notion.com/mcp \
+  -H "Authorization: ******"
 ```
 
 ## Monitoring and debugging tips
@@ -208,6 +212,7 @@ curl -i https://mcp.notion.com/mcp
 copilot mcp add --transport http github https://api.githubcopilot.com/mcp/ \
   --header "Authorization: ******"
 ```
+Use an auth scheme prefix in this header (typically `Bearer`) before your token value.
 
 ## Stripe MCP
 ```bash
